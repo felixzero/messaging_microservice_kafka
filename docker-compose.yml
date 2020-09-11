@@ -1,0 +1,73 @@
+version: '3.1'
+
+services:
+  # We use nginx as a reverse proxy for our micro-service architecture
+  nginx:
+    image: nginx:alpine
+    ports:
+      - 8080:8080
+    networks:
+      - default
+    volumes:
+      - ./configuration/nginx.conf:/etc/nginx/nginx.conf
+
+  # Our messaging micro-service
+  messaging-api:
+    build:
+      context: ./messaging-api/
+      dockerfile: ./docker/Dockerfile
+    depends_on:
+      - nginx
+      - kafka
+    command: mvn spring-boot:run
+    environment:
+      - JAVA_TOOL_OPTIONS="-Xmx512m"
+    volumes:
+      - ./configuration:/tmp/configuration:delegated
+      - ./messaging-api:/tmp/app:delegated
+      - ~/.m2:/home/deploy/.m2:cached
+    networks:
+      - default
+
+  # Zookeeper: required by Kafka
+  zookeeper:
+    image: 'bitnami/zookeeper:3'
+    ports:
+      - '2181:2181'
+    volumes:
+      - 'zookeeper_data:/bitnami'
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+
+  # Kafka itself
+  kafka:
+    image: 'bitnami/kafka:2'
+    ports:
+      - '9092:9092'
+    volumes:
+      - 'kafka_data:/bitnami'
+    environment:
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
+    depends_on:
+      - zookeeper
+
+  # Mailhog: mail catcher for local debugging
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - 1025:1025 # SMTP server ports
+      - 8025:8025 # Web UI ports
+
+volumes:
+  zookeeper_data:
+    driver: local
+  kafka_data:
+    driver: local
+
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: 172.16.100.0/24

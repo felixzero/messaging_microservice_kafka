@@ -1,0 +1,8 @@
+Hello [(${fullName})],
+
+Your subscription for [(${productName})] received an update. Please go check it out on :
+
+https://definitely-not-a-spam.com/legit-link
+
+Cheers.
+

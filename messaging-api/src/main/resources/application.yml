@@ -1,0 +1,67 @@
+info:
+  version: 0.0.1
+
+spring:
+  application:
+    name: messaging-api
+
+  data:
+    rest:
+      detection-strategy: annotated
+
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+      write-dates-as-timestamps: false
+    date-format: com.fasterxml.jackson.databind.util.ISO8601DateFormat
+
+  kafka:
+    properties:
+      security.protocol: 'PLAINTEXT'
+    bootstrap-servers: kafka:9092
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      group-id: messaging_api
+      auto-offset-reset: earliest
+      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        spring.json.trusted.packages: '*'
+        spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+    listener:
+      missing-topics-fatal: false
+
+  mail:
+    host: mailhog
+    port: 1025
+    properties:
+      mail.smtp.auth: false
+      mail.smtp.starttls.enable: false
+    addresses:
+      from: dev@sipios.com
+      replyTo: no-reply@sipios.com
+
+  thymeleaf:
+    check-template-location: true
+    prefix: 'classpath:/templates/'
+    suffix: .html
+    mode: HTML5
+    encoding: UTF-8
+
+server:
+  error.whitelabel.enabled: false
+  servlet:
+    session:
+      timeout: 30h
+      cookie:
+        http-only: false
+        secure: false
+
+kafka:
+  enabled: true
+  topics:
+    project-status-changed: DEV_project_status_changed_1_0_pu
+

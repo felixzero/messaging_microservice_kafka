@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+</head>
+<body>
+
+<table align="center">
+    <tr>
+        <td width="100%">
+            <table width="800">
+                <tr>
+                    <td align="center" width="800">
+                        <table width="100%">
+                            <tr>
+                                <td align="center" cellpadding="4"
+                                    style="font-size: 26px; color: #001D4A; font-family: sans-serif;">
+                                    <b>
+                                        Your subscription
+                                    </b>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td align="center" width="800">
+                        <table cellspacing="16"
+                               style="font-size: 16px; line-height: 150%; color: #001D4A; font-family: sans-serif;"
+                               width="100%;">
+                            <tr>
+                                <td>Hello <span th:text="${fullName}">Jane Doe</span>,</td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    Your subscription for <span th:text="${productName}">Serenity</span> received an update.
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td align="center" width="800">
+                        <table width="315">
+                            <tr>
+                                <td align="center" height="40"
+                                    style="font-size: 15px; font-family: sans-serif; background-color: #FFCD00; border-radius: 20px">
+                                    <b><a href="https://definitely-not-a-spam.com/legit-link" style="color: black; text-decoration: none"
+                                          target="_blank">
+                                        Check it out.
+                                    </a></b>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>
